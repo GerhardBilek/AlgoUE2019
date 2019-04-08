@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/Users/gerhardbilek/anaconda3/bin/python3
 
 import sys
 
@@ -9,7 +9,7 @@ python3.7 mt.py < rmHVD_10_15
 
 Testmatrizen:
 rmHVD_10_15 (weight = 61.34)
-rmHVD_999_15 (weight = 7220.98)
+rmHVD_999_15 (weight = 7220.98)  Korrekt: 7221.69
 '''
 
 theMatrix = sys.stdin
@@ -44,43 +44,47 @@ for i in range(rows):
 
 #__ calc FIRST right
 for i in range(rows-1):
-    countMatrix[0][i+1] = round(countMatrix[0][i] + float(theList[rows-1][i]),2)
+    countMatrix[0][i+1] = countMatrix[0][i] + float(theList[rows-1][i])
 
 #__ calc FIRST down
 for i in range(columns-1):
-    countMatrix[i+1][0] = round(countMatrix[i][0] + float(theList[i][0]),2)
+    countMatrix[i+1][0] = countMatrix[i][0] + float(theList[i][0])
+
+
 
 #__ Manhattan
 for j in range(rows-1):       
         for i in range(columns-1):
                 #__ DOWN
-                down = round(countMatrix[j][i+1]+ float(theList[j][i+1]),2)
+                down = countMatrix[j][i+1]+ float(theList[j][i+1])
                 #print("D_countMatrix: ", countMatrix[j][i+1])
                 #print("D_theList: ", theList[j][i+1])
                 #print("Down_sum",down)
                 #__ RIGHT
-                right = round(countMatrix[j+1][i]+ float(theList[rows+j][i]),2)
+                right = countMatrix[j+1][i]+ float(theList[rows+j][i])
                 #print("R_countMatrix: ", countMatrix[j+1][i])
                 #print("R_theList: ", theList[rows+j][i])
                 #print("right_sum", right)
                 #__ DIAGONAL
-                diagonal = round(countMatrix[j][i]+ float(theList[2*rows-1+j][i]),2)
+                diagonal = countMatrix[j][i]+ float(theList[2*rows-1+j][i])
                 #print("Dia_countMatrix: ", countMatrix[j][i])
                 #print("Dia_theList: ", theList[2*rows-1+j][i])
                 #print("Dia_sum", diagonal)
 
-                if (down > right and down > diagonal):
+                if (down >= right and down >= diagonal):
                         countMatrix[j+1][i+1] = down
-                elif (right > down and right > diagonal):
+                elif (right > down and right >= diagonal):
                         countMatrix[j+1][i+1] = right
                 elif (diagonal > down and diagonal > right):
                         countMatrix[j+1][i+1] = diagonal
+
 
 # TestMatrix 20.68
 
 #__ print countMatrix per line
 #for i in range(len(countMatrix)):
 #        print(countMatrix[i])
+
 
 print(countMatrix[rows-1][columns-1])
 
